@@ -27,5 +27,5 @@ For example, you can use it with VirtualHere on your Standalone Virtual Reality 
   ```
 - 4) unsure in the Leap Control Panel that you give access to web applications
 - 5) use the Leap Motion SDK as normal, and just check the `Remote Connection` box in the `LeapServiceProvider` or `LeapXRServiceProvider` in the Unity inspector
-- 6) by default, the Leap Motion software is configured to allow only local connection on the hidden webserver, so don't forget to enable the "websocket_allow_remote" in the config file (like explained here https://forums.leapmotion.com/t/read-leap-data-from-guest-vm-on-host-machine-using-websockets/1523/10 and there https://developer.leapmotion.com/documentation/v4/configuration.html) and restart the leap software
+- 6) by default, the Leap Motion software is configured to allow only local connection on the hidden webserver, so don't forget to enable the "websocket_allow_remote" in the config file (like explained here https://forums.leapmotion.com/t/read-leap-data-from-guest-vm-on-host-machine-using-websockets/1523/10 and there https://developer.leapmotion.com/documentation/v4/configuration.html) and restart the leap software. Also, don't forget to set the ip in the inspector of `LeapServiceProvider` or `LeapXRServiceProvider`
 - 7) if that don't work, check your anti-virus or firewall on your pc
