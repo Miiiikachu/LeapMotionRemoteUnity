@@ -8,8 +8,10 @@
 
 using System;
 
-namespace Leap {
-    public interface IController : IDisposable {
+namespace Leap
+{
+    public interface IController : IDisposable
+    {
         /// <summary>
         /// In most cases you should get Frame objects using the LeapProvider.CurrentFrame
         /// property. The data in Frame objects taken directly from a Leap.Controller instance

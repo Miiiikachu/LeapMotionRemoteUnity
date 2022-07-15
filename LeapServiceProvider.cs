@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,11 @@ namespace Leap.Unity {
   /// via the Leap service running on the client machine.
   /// </summary>
   public class LeapServiceProvider : LeapProvider {
+    
+    const int _port = 6437;
+    [SerializeField] protected bool _remoteConnection;
+    [SerializeField] protected string _ip = "127.0.0.1";
+    [SerializeField] protected int _jsonVersion = 6;
 
     #region Constants
 
@@ -48,16 +54,28 @@ namespace Leap.Unity {
     /// </summary>
     protected const int RECONNECTION_INTERVAL = 180;
 
-    const int _port = 6437;
-    
     #endregion
 
     #region Inspector
 
-    [SerializeField] protected bool _remoteConnection;
-    [SerializeField] protected string _ip = "127.0.0.1";
-    [SerializeField] protected int _jsonVersion = 6;
-    
+    public enum TrackingOptimizationMode
+    {
+      Desktop,
+      ScreenTop,
+      HMD
+    }
+
+    [Tooltip("[Service must be >= 4.9.2!] " +
+     "Which tracking mode to request that the service optimize for. " +
+     "(Use the LeapXRServiceProvider for HMD Mode instead of this option!)")]
+    [SerializeField]
+    [EditTimeOnly]
+    private TrackingOptimizationMode _trackingOptimization = TrackingOptimizationMode.Desktop;
+
+    [Tooltip("Enable to prevent any changes to tracking mode, including during initialization. The mode the service is currently set to will be retained.")]
+    [SerializeField]
+    private bool _preventChangingTrackingMode;
+
     public enum InteractionVolumeVisualization {
       None,
       LeapMotionController,
@@ -104,6 +122,11 @@ namespace Leap.Unity {
 #endif
     [SerializeField]
     protected bool _workerThreadProfiling = false;
+
+    [Tooltip("Which Leap Service API Endpoint to connect to.  This is configured on the service with the 'api_namespace' argument.")]
+    [SerializeField]
+    [EditTimeOnly]
+    protected string _serverNameSpace = "Leap Service";
 
     #endregion
 
@@ -458,7 +481,7 @@ namespace Leap.Unity {
       }
       #endif
     }
- 
+    
     /// <summary>
     /// Initializes Leap Motion policy flags.
     /// </summary>
@@ -516,10 +539,8 @@ namespace Leap.Unity {
     /// </summary>
     protected void destroyController() {
       if (_leapController != null) {
-        if (_leapController.IsConnected) {
-          _leapController.ClearPolicy(Controller.PolicyFlag.POLICY_OPTIMIZE_HMD);
-        }
         _leapController.StopConnection();
+        _leapController.Dispose();
         _leapController = null;
       }
     }

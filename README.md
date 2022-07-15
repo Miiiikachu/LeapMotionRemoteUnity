@@ -1,3 +1,11 @@
+# Update
+
+For compatibility with update version of leap motion
+
+
+
+
+
 # LeapMotionRemoteUnity
 Some code to use the Leap Motion remotely in Unity based on Websockets
 
